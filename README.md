@@ -16,6 +16,22 @@ A real-time market data infrastructure built for the **PocketOption** broker, po
 
 PocketOption, like most retail broker platforms, doesn't expose a public, documented API for live quotes — the data only exists inside their own web trading terminal. This project solves that by building a resilient, always-on bridge that extracts the live price feed and re-serves it in a clean, structured way that any downstream application (bot, dashboard, chart) can consume.
 
+## Project structure
+
+*(simplified overview)*
+
+```
+market-signal-engine/
+├── bridge/             # maintains a live broker session and captures the raw price stream
+├── server/             # aggregates ticks into candles and serves them to consumers
+│   ├── candles/          # tick → OHLC aggregation, per timeframe
+│   ├── api/               # HTTP endpoints (candles, signals, chart images)
+│   └── ws/                 # WebSocket broadcast to connected clients
+├── signals/            # technical-indicator based signal scoring
+├── deploy/             # systemd service definitions, Nginx config templates
+└── README.md
+```
+
 ## How it works — illustrative examples
 
 *(Simplified examples for demonstration only — not the production source.)*
@@ -91,6 +107,22 @@ Python, WebSockets, headless browser automation, in-memory time-series aggregati
 ## Почему это нетривиально
 
 PocketOption, как и большинство брокеров, не предоставляет публичный документированный API для живых котировок — данные существуют только внутри их собственного веб-терминала. Проект решает эту задачу, строя устойчивый, постоянно работающий мост, который извлекает живой поток цен и отдаёт его в чистом, структурированном виде любому потребителю (боту, дашборду, графику).
+
+## Структура проекта
+
+*(упрощённый обзор)*
+
+```
+market-signal-engine/
+├── bridge/             # держит живую сессию с брокером и забирает сырой поток цен
+├── server/             # агрегирует тики в свечи и отдаёт их потребителям
+│   ├── candles/          # сборка тиков в OHLC-свечи по таймфреймам
+│   ├── api/               # HTTP-эндпоинты (свечи, сигналы, изображения графиков)
+│   └── ws/                 # рассылка по WebSocket подключённым клиентам
+├── signals/            # сигнальный скоринг на технических индикаторах
+├── deploy/             # описания systemd-сервисов, шаблоны конфигов Nginx
+└── README.md
+```
 
 ## Как это работает — примеры
 
